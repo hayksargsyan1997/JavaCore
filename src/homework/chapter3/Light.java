@@ -1,6 +1,6 @@
 package homework.chapter3;
 
-public class LightClass {
+public class Light {
     public static void main(String[] args) {
         int lightspeed;
         long days, seconds, distance;
