@@ -46,6 +46,7 @@ public class Menu {
                     System.out.println("The for:\n");
                     System.out.println("for(init;condition;iteration)");
                     System.out.println(" statmet;");
+                    break;
             }
         }
     }
