@@ -34,22 +34,20 @@ public class CharUtil {
         System.out.println(bobik);
 
         char[] text = {' ', ' ', ' ', ' ', 'b', 'a', 'r', 'e', 'v', ' ', ' ', ' ', ' '};
-        int first = 0;
-        int end = text.length - 1;
-        while (first < end && text[first] == ' ') {
-            first++;
+        char[] result = new char[5];
+        int caunt = 0;
+        for (int i = 0; i < text.length; i++) {
+            if (text[i] != ' ') {
+                result[caunt] = text[i];
+                caunt++;
+            }
 
         }
-        while (first < end && text[end] == ' ') {
-            end--;
-        }
-        char[] result = new char[(end - first) + 1];
-        int x = 0;
-        for (int i = first; i < end + 1; i++) {
-            result[x++] = text[i];
-        }
-        for (char y : result) {
-            System.out.print(y);
+        for (int j = 0; j < result.length; j++) {
+            if (result[j] == ' ') {
+                break;
+            }
+            System.out.print(result[j]);
         }
 
     }
