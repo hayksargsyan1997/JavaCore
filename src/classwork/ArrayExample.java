@@ -23,8 +23,8 @@ public class ArrayExample {
 
         int tmp = array[0];
         for (int i = 0; i < array.length; i++) {
-            for (int j = i; j < array.length; j++) {
-                if (array[i] > array[j]) {
+            for (int j = 0; j < array.length; j++) {
+                if (array[i] < array[j]) {
                     tmp = array[i];
                     array[i] = array[j];
                     array[j] = tmp;
