@@ -24,9 +24,9 @@ public class CharUtil {
             System.out.println(true);
         } else System.out.println(false);
 
-        char[] bob = {'b', 'v', 'b', 'i', 'b', 'b'};
+        char[] bob = {'a', 'v', 'a', 'b', 's', 'b'};
         boolean bobik = false;
-        for (int i = 0; i < bob.length; i++) {
+        for (int i = 0; i < bob.length - 2; i++) {
             if (bob[i] == 'b' && bob[i + 2] == 'b') {
                 bobik = true;
                 break;
