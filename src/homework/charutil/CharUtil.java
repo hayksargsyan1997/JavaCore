@@ -36,18 +36,18 @@ public class CharUtil {
 
 
         char[] text = {' ', ' ', 'b', 'a', ' ', 'r', 'e', 'v', ' ', ' '};
-        int beg = 0;
+        int first = 0;
         int end = text.length - 1;
-        while (beg < end && text[beg] == ' ') {
-            beg++;
+        while (first < end && text[first] == ' ') {
+            first++;
         }
-        while (beg < end && text[end] == ' ') {
+        while (first < end && text[end] == ' ') {
             end--;
         }
 
-        char[] result = new char[(end - beg) + 1];
+        char[] result = new char[(end - first) + 1];
         int index = 0;
-        for (int i = beg; i < end + 1; i++) {
+        for (int i = first; i < end+1 ; i++) {
             result[index++] = text[i];
         }
         for (char x : result) {
