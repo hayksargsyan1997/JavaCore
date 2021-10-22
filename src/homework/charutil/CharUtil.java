@@ -24,11 +24,12 @@ public class CharUtil {
             System.out.println(true);
         } else System.out.println(false);
 
-        char[] bob = {'b', 'v', 'b', 'i', 'k'};
+        char[] bob = {'b', 'v', 'b', 'i', 'b', 'b'};
         boolean bobik = false;
         for (int i = 0; i < bob.length; i++) {
             if (bob[i] == 'b' && bob[i + 2] == 'b') {
                 bobik = true;
+                break;
 
             }
         }
@@ -47,7 +48,7 @@ public class CharUtil {
 
         char[] result = new char[(end - first) + 1];
         int index = 0;
-        for (int i = first; i < end+1 ; i++) {
+        for (int i = first; i < end + 1; i++) {
             result[index++] = text[i];
         }
         for (char x : result) {
