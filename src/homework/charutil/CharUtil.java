@@ -29,26 +29,71 @@ public class CharUtil {
         for (int i = 0; i < bob.length; i++) {
             if (bob[i] == 'b' && bob[i + 2] == 'b') {
                 bobik = true;
+
             }
         }
         System.out.println(bobik);
 
-        char[] text = {' ', ' ', ' ', ' ', 'b', 'a', 'r', 'e', 'v', ' ', ' ', ' ', ' '};
-        char[] result = new char[5];
-        int caunt = 0;
-        for (int i = 0; i < text.length; i++) {
-            if (text[i] != ' ') {
-                result[caunt] = text[i];
-                caunt++;
-            }
 
+        char[] text = {' ', ' ', 'b', 'a', ' ', 'r', 'e', 'v', ' ', ' '};
+        int beg = 0;
+        int end = text.length - 1;
+        while (beg < end && text[beg] == ' ') {
+            beg++;
         }
-        for (int j = 0; j < result.length; j++) {
-            if (result[j] == ' ') {
-                break;
-            }
-            System.out.print(result[j]);
+        while (beg < end && text[end] == ' ') {
+            end--;
+        }
+
+        char[] result = new char[(end - beg) + 1];
+        int index = 0;
+        for (int i = beg; i < end + 1; i++) {
+            result[index++] = text[i];
+        }
+        for (char x : result) {
+            System.out.print(x);
         }
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
