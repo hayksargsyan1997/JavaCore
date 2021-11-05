@@ -5,8 +5,8 @@ public class DynamicArrayTest {
         DynamicArray da=new DynamicArray();
         da.add(6);
         da.add(4);
-        da.getByIndex(6);
-        da.getByIndex(4);
+        System.out.println(da.getByIndex( 0));
+        System.out.println(da.getByIndex(2));
         da.print();
     }
 }
