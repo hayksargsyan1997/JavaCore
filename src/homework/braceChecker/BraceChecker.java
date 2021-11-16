@@ -9,31 +9,72 @@ public class BraceChecker {
 
     public void check() {
         Stack theStack = new Stack();
+        boolean isValid = true;
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) == '{' || text.charAt(i) == '[' || text.charAt(i) == '(') {
-                theStack.push(text.charAt(i));
-            } else if (text.charAt(i) == '}' || text.charAt(i) == ']' || text.charAt(i) == ')') {
+            char c = text.charAt(i);
+            int pop;
+            switch (c) {
+                case '(':
+                case '{':
+                case '[':
+                    theStack.push(c);
+                    break;
+                case ')':
+                    pop = theStack.pop();
+                    if (pop == 0) {
+                        isValid = false;
+                        System.err.println("Error:Closed " + c + "but nothing opened at " + i);
+                    } else if (pop != '(') {
+                        isValid = false;
+                        System.err.println("Error:  closed " + c +
+                                " but opened " + (char) pop + "at " + i);
 
-                switch (theStack.pop()) {
-                    case '(':
-                        if (text.charAt(i) != ')')
-                            System.out.print("Error: " + text.charAt(i) + " at " + i);
-                        break;
-                    case '[':
-                        if (text.charAt(i) != ']')
-                            System.out.print("Error: " + text.charAt(i) + " at " + i);
-                        break;
-                    case '{':
-                        if (text.charAt(i) != '}')
-                            System.out.print("Error: " + text.charAt(i) + " at " + i);
-                        break;
+                    }  break;
+                case '}':
+                    pop = theStack.pop();
+                    if (pop == 0) {
+                        isValid = false;
+                        System.err.println("Error:Closed " + c + "but nothing opened at " + i);
+                    } else if (pop != '{') {
+                        isValid = false;
+                        System.err.println("Error:  closed " + c +
+                                " but opened " + (char) pop + "at " + i);
 
+                    } break;
+                case ']':
+                    pop = theStack.pop();
+                    if (pop == 0) {
+                        isValid = false;
+                        System.err.println("Error:Closed " + c + "but nothing opened at " + i);
+                    } else if (pop != '[') {
+                        isValid = false;
+                        System.err.println("Error:  closed " + c +
+                                " but opened " + (char) pop + "at " + i);
 
-                }
+                    } break;
+
 
             }
 
+        }
 
+        while (!theStack.isEmpty()) {
+            isValid = false;
+            System.err.println("Error: opened " + (char) theStack.pop() + "but nothing closed");
+        }
+
+
+        if (isValid) {
+            System.out.println("Everything is good:");
         }
     }
 }
+
+
+
+
+
+
+
+
+

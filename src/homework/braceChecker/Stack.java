@@ -24,10 +24,13 @@ public class Stack {
 
     int pop() {
         if (index < 0) {
-            System.out.println("Stack underflow");
             return 0;
         } else
             return array[index--];
+    }
+
+    boolean isEmpty() {
+        return index == -1;
     }
 
 
