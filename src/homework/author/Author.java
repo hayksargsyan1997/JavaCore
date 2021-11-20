@@ -2,14 +2,14 @@ package homework.author;
 
 public class Author {
     private String name;
-    private String surName;
+    private String surname;
     private String email;
     private int age;
     private String gender;
 
-    Author(String name, String surName, String email, int age, String gender) {
+    Author(String name, String surname, String email, int age, String gender) {
         this.name = name;
-        this.surName = surName;
+        this.surname = surname;
         this.email = email;
         this.age = age;
         this.gender = gender;
@@ -28,12 +28,12 @@ public class Author {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setSurName(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -64,7 +64,7 @@ public class Author {
     public String toString() {
         return "Author{" +
                 "name='" + name + '\'' +
-                ", surName='" + surName + '\'' +
+                ", surName='" + surname + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
