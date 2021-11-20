@@ -2,9 +2,9 @@ package homework.author;
 
 public class Book {
     private String title;
-    String description;
-    double price;
-    int count;
+    private String description;
+    private double price;
+    private int count;
 
     public Book(String title, String description, double price, int count) {
         this.title = title;

@@ -23,7 +23,7 @@ public class AuthorTest {
 //        authorStorage.add(new Author("petros", "petrosyan","petros@mail.com",25 , "male"));
         boolean isRun = true;
         while (isRun) {
-            printCommands();
+//            printCommands();
             String command = scanner.nextLine();
             switch (command) {
                 case EXIT:
