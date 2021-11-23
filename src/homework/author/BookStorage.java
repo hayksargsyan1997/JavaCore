@@ -55,12 +55,5 @@ public class BookStorage {
     }
 
 
-    public Book changeBookAuthor(String title) {
-        for (int i = 0; i < size; i++) {
-            if (books[i].getTitle().equals(title)) {
-                return books[i];
-            }
-        }
-        return null;
-    }
+
 }
