@@ -21,6 +21,7 @@ public class BookStorage {
 
     public void print() {
         for (int i = 0; i < size; i++) {
+
             System.out.println(books[i]);
         }
     }
@@ -55,5 +56,41 @@ public class BookStorage {
     }
 
 
+    public void deleteAuthorBooks(String email) {
+        int length = size;
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if (books[i].getAuthor().getEmail().equals(email)) {
+                books[i] = null;
+                size--;
+            } else {
+                books[j] = books[i];
+                books[i] = null;
+                j++;
+            }
+        }
+    }
 
+    public void deleteBook(String title) {
+        int length = size;
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            if (books[i].getTitle().equals(title)) {
+                books[i] = null;
+                size--;
+            } else {
+                books[j] = books[i];
+                books[i] = null;
+                j++;
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
