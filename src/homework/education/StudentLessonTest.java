@@ -19,11 +19,12 @@ public class StudentLessonTest {
     private static final String DELETE_STUDENT_BY_EMAIL = "7";
 
     public static void main(String[] args) {
-
-
         boolean isRun = true;
+
+        UserNamePassword();
+
         while (isRun) {
-            UserNamePassword();
+
             printCommands();
             String commands = scanner.nextLine();
             switch (commands) {
@@ -169,14 +170,14 @@ public class StudentLessonTest {
     }
 
     private static void printCommands() {
-        System.out.println("\u001B[35m"+"Please input " + EXIT + " for EXIT");
+        System.out.println("\u001B[35m" + "Please input " + EXIT + " for EXIT");
         System.out.println("Please input " + ADD_LESSON + " for ADD_LESSON");
         System.out.println("Please input " + ADD_STUDENT + " for ADD_STUDENT");
         System.out.println("Please input " + PRINT_STUDENTS + " for  PRINT_STUDENTS");
         System.out.println("Please input " + PRINT_STUDENTS_BY_LESSON + " for PRINT_STUDENTS_BY_LESSON");
         System.out.println("Please input " + PRINT_LESSONS + " for  PRINT_LESS0NS");
         System.out.println("Please input " + DELETE_LESSONS_BY_NAME + " for DELETE_LESSON_BY_NAME");
-        System.out.println("Please input " + DELETE_STUDENT_BY_EMAIL + " for DELETE_STUDENT_BY_EMAIL"+"\u001B[36m");
+        System.out.println("Please input " + DELETE_STUDENT_BY_EMAIL + " for DELETE_STUDENT_BY_EMAIL" + "\u001B[36m");
     }
 
 
