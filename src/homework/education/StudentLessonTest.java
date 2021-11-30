@@ -21,7 +21,7 @@ public class StudentLessonTest {
     public static void main(String[] args) {
         boolean isRun = true;
 
-        UserNamePassword();
+        userNamePassword();
 
         while (isRun) {
 
@@ -58,7 +58,7 @@ public class StudentLessonTest {
         }
     }
 
-    private static void UserNamePassword() {
+    private static void userNamePassword() {
         System.out.println("Ծածկանուն");
         String userName = scanner.nextLine();
         System.out.println("Գաղտնաբառ");
@@ -67,7 +67,7 @@ public class StudentLessonTest {
             System.out.println("մուտքը հաստատված է");
         } else {
             System.out.println("Անվավեր ծածկանուն կամ գաղտնաբառ");
-            UserNamePassword();
+            userNamePassword();
         }
     }
 
@@ -131,20 +131,24 @@ public class StudentLessonTest {
             int age = Integer.parseInt(scanner.nextLine());
             System.out.println("խնդրում ենք մուտքագրել ուսանողի հեռախոսահամարը");
             String phone = scanner.nextLine();
-            System.out.println("խնդրում եմ մուտքագրել  դասընթացը");
-            String lesson = scanner.nextLine();
+            System.out.println("խնդրում եմ մուտքագրել դասընթացները");
+            String lessons = scanner.nextLine();
+            String[] less = lessons.split(",");
+            Lesson[] lesson = new Lesson[less.length];
+            for (int i = 0; i < less.length; i++) {
+                if (lessonStorage.getByName(less[i]) != null) {
+                    lesson[i] = lessonStorage.getByName(less[i]);
+                } else {
+                    System.out.println("Դասընթացը գոյություն չունի");
+                }
+            }
+            Student student1 = new Student(name, surname, age, email, phone, lesson);
+            studentStorage.add(student1);
+            System.out.println("Շնորհակալություն, ուսանողն ավելացվեց");
 
-            Student students = new Student(name, surname, age, email, phone, lesson);
-
-            studentStorage.add(students);
-
-            System.out.println("շնորհակալություն ուսանողի տվյալները ավելացվեցին");
-        } else {
-            System.err.println("Այդ էլ․հասցեով արդեն ուսանող կար");
         }
 
     }
-
     private static void addLesson() {
         System.out.println("Խնդրում ենք մուտքագրել դասընթացի անունը");
         String name = scanner.nextLine();
@@ -169,6 +173,7 @@ public class StudentLessonTest {
         }
     }
 
+
     private static void printCommands() {
         System.out.println("\u001B[35m" + "Please input " + EXIT + " for EXIT");
         System.out.println("Please input " + ADD_LESSON + " for ADD_LESSON");
@@ -178,8 +183,7 @@ public class StudentLessonTest {
         System.out.println("Please input " + PRINT_LESSONS + " for  PRINT_LESS0NS");
         System.out.println("Please input " + DELETE_LESSONS_BY_NAME + " for DELETE_LESSON_BY_NAME");
         System.out.println("Please input " + DELETE_STUDENT_BY_EMAIL + " for DELETE_STUDENT_BY_EMAIL" + "\u001B[36m");
+
+
     }
-
-
 }
-
