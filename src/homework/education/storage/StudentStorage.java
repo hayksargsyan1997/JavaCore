@@ -1,6 +1,8 @@
-package homework.education;
+package homework.education.storage;
 
-import homework.author.Author;
+import homework.education.model.Lesson;
+import homework.education.util.ArrayUtil;
+import homework.education.model.Student;
 
 public class StudentStorage {
     private Student[] students = new Student[10];
@@ -52,14 +54,14 @@ public class StudentStorage {
         }
     }
 
-    public Student getByLesson(String lesson) {
+
+    public void printStudentsByLesson(Lesson lesson1) {
         for (int i = 0; i < size; i++) {
-            if (students[i].getLesson().equals(lesson)) {
-                return students[i];
+            for (Lesson lesson : students[i].getLesson()) {
+                if (lesson.equals(lesson1)) {
+                    System.out.println(students[i]);
+                }
             }
         }
-        return null;
     }
-
-
 }

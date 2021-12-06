@@ -1,4 +1,4 @@
-package homework.education;
+package homework.education.model;
 
 import java.util.Objects;
 
@@ -8,8 +8,8 @@ public class Lesson {
     private String lectureName;
     private double price;
 
-    Lesson(String name, String duration,
-           String lectureName, double price) {
+    public Lesson(String name, String duration,
+                  String lectureName, double price) {
         this.name = name;
         this.duration = duration;
         this.lectureName = lectureName;

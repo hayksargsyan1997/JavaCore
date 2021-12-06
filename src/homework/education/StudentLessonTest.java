@@ -1,34 +1,130 @@
 package homework.education;
 
 
+import homework.education.commands.AdminCommand;
+import homework.education.commands.PrimeCommand;
+import homework.education.commands.UserCommand;
+import homework.education.model.User;
+import homework.education.storage.StudentStorage;
+import homework.education.model.Lesson;
+import homework.education.model.Student;
+import homework.education.storage.LessonStorage;
+import homework.education.storage.UserStorage;
+import homework.education.util.DateUtil;
+
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 
-public class StudentLessonTest {
+public class StudentLessonTest implements PrimeCommand, AdminCommand, UserCommand {
     static Scanner scanner = new Scanner(System.in);
+    static UserStorage userStorage = new UserStorage();
     static LessonStorage lessonStorage = new LessonStorage();
     static StudentStorage studentStorage = new StudentStorage();
 
 
-    private static final String EXIT = "0";
-    private static final String ADD_LESSON = "1";
-    private static final String ADD_STUDENT = "2";
-    private static final String PRINT_STUDENTS = "3";
-    private static final String PRINT_STUDENTS_BY_LESSON = "4";
-    private static final String PRINT_LESSONS = "5";
-    private static final String DELETE_LESSONS_BY_NAME = "6";
-    private static final String DELETE_STUDENT_BY_EMAIL = "7";
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         boolean isRun = true;
+        while (isRun) {
+            PrimeCommand.commands();
+            String command = scanner.nextLine();
+            switch (command) {
+                case LOGIN:
+                    login();
+                    break;
+                case REGISTER:
+                    register();
+                    break;
+                case EXIT:
+                    isRun = false;
+                    break;
+            }
+        }
 
-        userNamePassword();
+    }
 
+    private static void register() {
+        System.out.println("Անուն");
+        String name = scanner.nextLine();
+        System.out.println("Ազգանուն");
+        String surname = scanner.nextLine();
+        System.out.println("Էլ․ հասցե");
+        String email = scanner.nextLine();
+        System.out.println("Գաղտաբառ");
+        String password = scanner.nextLine();
+        System.out.println("Ադմին թե Օգտատեր");
+        String type = scanner.nextLine();
+        User user = userStorage.getByEmail(email);
+        if (user == null) {
+            if (type.equals("Ադմին") || type.equals("Օգտատեր")) {
+                User newUser = new User(name, surname, email, password, type);
+                userStorage.add(newUser);
+                System.out.println("Դուք գրանցված եք");
+            } else {
+                System.err.println("Սխալ տիպ");
+            }
+        } else
+            System.err.println("Այս էլ․հասցեով օգտատեր գոյություն ունի");
+    }
+
+    private static void login() throws ParseException {
+        System.out.println("մուտքանուն");
+        String email = scanner.nextLine();
+        System.out.println("Գաղտնաբառ");
+        String password = scanner.nextLine();
+        User user = userStorage.getByEmail(email);
+        if (user != null && user.getPassword().equals(password) && user.getType().equals("Ադմին")) {
+            adminMethods();
+        } else if (user != null && user.getPassword().equals(password) && user.getType().equals("Օգտատեր")) {
+            userMethods();
+        } else if (user != null && !user.getPassword().equals(password)) {
+            System.err.println("Անվավեր գաղտնաբառ");
+        } else {
+            System.err.println("Օգտատեր գոյություն չունի");
+        }
+    }
+
+    private static void userMethods() throws ParseException {
+        boolean isRun = true;
         while (isRun) {
 
-            printCommands();
+            UserCommand.printCommands();
             String commands = scanner.nextLine();
             switch (commands) {
-                case EXIT:
+                case PrimeCommand.EXIT:
+                    isRun = false;
+                    break;
+                case ADD_LESSON:
+                    addLesson();
+                    break;
+                case ADD_STUDENT:
+                    addStudent();
+                    break;
+                case PRINT_STUDENTS:
+                    studentStorage.print();
+                    break;
+                case PRINT_STUDENTS_BY_LESSON:
+                    printStudentsByLesson();
+                    break;
+                case PRINT_LESSONS:
+                    lessonStorage.print();
+                    break;
+
+                default:
+                    System.err.println("Անվավեր հրաման");
+            }
+        }
+
+    }
+
+    private static void adminMethods() throws ParseException {
+        boolean isRun = true;
+        while (isRun) {
+
+            AdminCommand.printCommands();
+            String commands = scanner.nextLine();
+            switch (commands) {
+                case PrimeCommand.EXIT:
                     isRun = false;
                     break;
                 case ADD_LESSON:
@@ -55,19 +151,6 @@ public class StudentLessonTest {
                 default:
                     System.err.println("Անվավեր հրաման");
             }
-        }
-    }
-
-    private static void userNamePassword() {
-        System.out.println("Ծածկանուն");
-        String userName = scanner.nextLine();
-        System.out.println("Գաղտնաբառ");
-        String password = scanner.nextLine();
-        if (userName.equals("ITSpaceAcademy") && password.equals("JavaCore21-22")) {
-            System.out.println("մուտքը հաստատված է");
-        } else {
-            System.out.println("Անվավեր ծածկանուն կամ գաղտնաբառ");
-            userNamePassword();
         }
     }
 
@@ -106,17 +189,18 @@ public class StudentLessonTest {
         System.out.println("Խնդրում ենք մուտքագրել ուսանողական դասընթացի անունը");
         String lesson = scanner.nextLine();
 
-        Student student = studentStorage.getByLesson(lesson);
+        Lesson lesson1 = lessonStorage.getByName(lesson);
 
-        if (student != null) {
-            studentStorage.getStudentLesson(student);
+        if (lesson1 != null) {
+            studentStorage.printStudentsByLesson(lesson1);
+            System.out.println("Դասընթացին մասնակցում են տվյալ ուսանողները");
         } else {
             System.out.println("Այդ անունով դասընթաց չկա");
             printStudentsByLesson();
         }
     }
 
-    private static void addStudent() {
+    private static void addStudent() throws ParseException {
         System.out.println("խնդրում ենք մուտքագրել ուսանողի էլ․հասցեն");
         String email = scanner.nextLine();
 
@@ -131,6 +215,9 @@ public class StudentLessonTest {
             int age = Integer.parseInt(scanner.nextLine());
             System.out.println("խնդրում ենք մուտքագրել ուսանողի հեռախոսահամարը");
             String phone = scanner.nextLine();
+            System.out.println("Խնդրում ենք մուտքագրել ծննդըան օրը 22/12/2022");
+            String birthday = scanner.nextLine();
+            Date date = DateUtil.stringToDate(birthday);
             System.out.println("խնդրում եմ մուտքագրել դասընթացները");
             String lessons = scanner.nextLine();
             String[] less = lessons.split(",");
@@ -142,13 +229,14 @@ public class StudentLessonTest {
                     System.out.println("Դասընթացը գոյություն չունի");
                 }
             }
-            Student student1 = new Student(name, surname, age, email, phone, lesson);
+            Student student1 = new Student(name, surname, age, email, phone, lesson, date);
             studentStorage.add(student1);
             System.out.println("Շնորհակալություն, ուսանողն ավելացվեց");
 
         }
 
     }
+
     private static void addLesson() {
         System.out.println("Խնդրում ենք մուտքագրել դասընթացի անունը");
         String name = scanner.nextLine();
@@ -174,16 +262,4 @@ public class StudentLessonTest {
     }
 
 
-    private static void printCommands() {
-        System.out.println("\u001B[35m" + "Please input " + EXIT + " for EXIT");
-        System.out.println("Please input " + ADD_LESSON + " for ADD_LESSON");
-        System.out.println("Please input " + ADD_STUDENT + " for ADD_STUDENT");
-        System.out.println("Please input " + PRINT_STUDENTS + " for  PRINT_STUDENTS");
-        System.out.println("Please input " + PRINT_STUDENTS_BY_LESSON + " for PRINT_STUDENTS_BY_LESSON");
-        System.out.println("Please input " + PRINT_LESSONS + " for  PRINT_LESS0NS");
-        System.out.println("Please input " + DELETE_LESSONS_BY_NAME + " for DELETE_LESSON_BY_NAME");
-        System.out.println("Please input " + DELETE_STUDENT_BY_EMAIL + " for DELETE_STUDENT_BY_EMAIL" + "\u001B[36m");
-
-
-    }
 }
