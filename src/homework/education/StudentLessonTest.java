@@ -1,9 +1,8 @@
 package homework.education;
 
 
-import homework.education.commands.AdminCommand;
-import homework.education.commands.PrimeCommand;
-import homework.education.commands.UserCommand;
+import homework.education.commands.Commands;
+import homework.education.exception.UserNotFoundException;
 import homework.education.model.User;
 import homework.education.storage.StudentStorage;
 import homework.education.model.Lesson;
@@ -11,22 +10,21 @@ import homework.education.model.Student;
 import homework.education.storage.LessonStorage;
 import homework.education.storage.UserStorage;
 import homework.education.util.DateUtil;
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class StudentLessonTest implements PrimeCommand, AdminCommand, UserCommand {
+public class StudentLessonTest implements Commands {
     static Scanner scanner = new Scanner(System.in);
     static UserStorage userStorage = new UserStorage();
     static LessonStorage lessonStorage = new LessonStorage();
     static StudentStorage studentStorage = new StudentStorage();
 
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args)  {
         boolean isRun = true;
         while (isRun) {
-            PrimeCommand.commands();
+            Commands.primeCommands();
             String command = scanner.nextLine();
             switch (command) {
                 case LOGIN:
@@ -44,18 +42,20 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
     }
 
     private static void register() {
-        System.out.println("Անուն");
-        String name = scanner.nextLine();
-        System.out.println("Ազգանուն");
-        String surname = scanner.nextLine();
         System.out.println("Էլ․ հասցե");
         String email = scanner.nextLine();
-        System.out.println("Գաղտաբառ");
-        String password = scanner.nextLine();
-        System.out.println("Ադմին թե Օգտատեր");
-        String type = scanner.nextLine();
-        User user = userStorage.getByEmail(email);
-        if (user == null) {
+        try {
+           userStorage.getByEmail(email);
+            System.err.println("Այս էլ․հասցեով օգտատեր գոյություն ունի");
+        } catch (UserNotFoundException e) {
+            System.out.println("Անուն");
+            String name = scanner.nextLine();
+            System.out.println("Ազգանուն");
+            String surname = scanner.nextLine();
+            System.out.println("Գաղտաբառ");
+            String password = scanner.nextLine();
+            System.out.println("Ադմին թե Օգտատեր");
+            String type = scanner.nextLine();
             if (type.equals("Ադմին") || type.equals("Օգտատեր")) {
                 User newUser = new User(name, surname, email, password, type);
                 userStorage.add(newUser);
@@ -63,36 +63,44 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
             } else {
                 System.err.println("Սխալ տիպ");
             }
-        } else
-            System.err.println("Այս էլ․հասցեով օգտատեր գոյություն ունի");
+        }
+
+
+
+
     }
 
-    private static void login() throws ParseException {
+    private static void login() {
         System.out.println("մուտքանուն");
         String email = scanner.nextLine();
         System.out.println("Գաղտնաբառ");
         String password = scanner.nextLine();
-        User user = userStorage.getByEmail(email);
-        if (user != null && user.getPassword().equals(password) && user.getType().equals("Ադմին")) {
-            adminMethods();
-        } else if (user != null && user.getPassword().equals(password) && user.getType().equals("Օգտատեր")) {
-            userMethods();
-        } else if (user != null && !user.getPassword().equals(password)) {
-            System.err.println("Անվավեր գաղտնաբառ");
-        } else {
-            System.err.println("Օգտատեր գոյություն չունի");
+        User user;
+        try {
+            user = userStorage.getByEmail(email);
+            if ( user.getPassword().equals(password) && user.getType().equals("Ադմին")) {
+                adminMethods();
+            } else if (  user.getPassword().equals(password) && user.getType().equals("Օգտատեր")) {
+                userMethods();
+            } else if (!user.getPassword().equals(password)) {
+                System.err.println("Անվավեր գաղտնաբառ");
+            }
+        } catch (UserNotFoundException e) {
+            System.out.println(e.getMessage());
         }
+
+
+
     }
 
-    private static void userMethods() throws ParseException {
+    private static void userMethods()  {
         boolean isRun = true;
         while (isRun) {
-
-            UserCommand.printCommands();
+            Commands.printUserCommands();
             String commands = scanner.nextLine();
             switch (commands) {
-                case PrimeCommand.EXIT:
-                    isRun = false;
+                case EXIT:
+                    System.exit(0);
                     break;
                 case ADD_LESSON:
                     addLesson();
@@ -109,7 +117,9 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
                 case PRINT_LESSONS:
                     lessonStorage.print();
                     break;
-
+                case LOGOUT:
+                    isRun=false;
+                    break;
                 default:
                     System.err.println("Անվավեր հրաման");
             }
@@ -117,15 +127,15 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
 
     }
 
-    private static void adminMethods() throws ParseException {
+    private static void adminMethods()  {
         boolean isRun = true;
         while (isRun) {
 
-            AdminCommand.printCommands();
+           Commands.printAdminCommands();
             String commands = scanner.nextLine();
             switch (commands) {
-                case PrimeCommand.EXIT:
-                    isRun = false;
+                case EXIT:
+                   System.exit(0);
                     break;
                 case ADD_LESSON:
                     addLesson();
@@ -148,6 +158,9 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
                 case DELETE_STUDENT_BY_EMAIL:
                     deleteStudentByEmail();
                     break;
+                case LOGOUT:
+                  isRun=false;
+                  break;
                 default:
                     System.err.println("Անվավեր հրաման");
             }
@@ -200,7 +213,7 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
         }
     }
 
-    private static void addStudent() throws ParseException {
+    private static void addStudent()  {
         System.out.println("խնդրում ենք մուտքագրել ուսանողի էլ․հասցեն");
         String email = scanner.nextLine();
 
@@ -217,7 +230,12 @@ public class StudentLessonTest implements PrimeCommand, AdminCommand, UserComman
             String phone = scanner.nextLine();
             System.out.println("Խնդրում ենք մուտքագրել ծննդըան օրը 22/12/2022");
             String birthday = scanner.nextLine();
-            Date date = DateUtil.stringToDate(birthday);
+            Date date = null;
+            try {
+                date = DateUtil.stringToDate(birthday);
+            } catch (ParseException e) {
+                System.err.println("Ամսաթվի անվավեր ձևաչափ");
+            }
             System.out.println("խնդրում եմ մուտքագրել դասընթացները");
             String lessons = scanner.nextLine();
             String[] less = lessons.split(",");
